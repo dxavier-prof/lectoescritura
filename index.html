@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Camino Secreto de los Sonidos - Método de los 20 Días</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Comic Neue & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            font-family: 'Comic Neue', cursive, 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            touch-action: manipulation;
+        }
+        .bounce-tap {
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+        }
+        .bounce-tap:active {
+            transform: scale(0.92);
+        }
+        .pulse-ring {
+            animation: pulse-border 1.5s infinite;
+        }
+        @keyframes pulse-border {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+        /* Custom scrollbars */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #93c5fd;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-slate-800 flex flex-col justify-between selection:bg-yellow-200">
+
+    <!-- TOP NAV / HEADER -->
+    <header class="bg-white/90 backdrop-blur border-b border-blue-100 sticky top-0 z-50 px-4 py-3 shadow-sm">
+        <div class="max-w-5xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-tr from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center text-white shadow-md shadow-blue-200">
+                    <i class="fa-solid fa-graduation-cap text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold text-blue-900 leading-none">Método 20 Días</h1>
+                    <p class="text-xs text-blue-600 font-semibold mt-0.5">Aventura de Lectoescritura</p>
+                </div>
+            </div>
+
+            <!-- Global Score & Progress -->
+            <div class="flex items-center space-x-3">
+                <div class="bg-amber-100 border border-amber-200 text-amber-800 px-3 py-1.5 rounded-full flex items-center space-x-1.5 text-sm font-bold shadow-inner">
+                    <i class="fa-solid fa-star text-amber-500 animate-bounce"></i>
+                    <span id="star-count">0</span>
+                </div>
+                <button onclick="openProgressModal()" class="bg-blue-50 hover:bg-blue-100 text-blue-700 px-3 py-1.5 rounded-xl font-bold text-sm border border-blue-200 transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-trophy text-yellow-500"></i>
+                    <span class="hidden sm:inline">Logros</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-5xl mx-auto w-full p-4 flex-grow">
+        
+        <!-- WORLD NAVIGATION TABS (A, E, I, O, U) -->
+        <div class="grid grid-cols-5 gap-2 mb-6">
+            <button onclick="switchWorld('A')" id="tab-A" class="world-tab p-3 rounded-2xl border-2 flex flex-col items-center justify-center transition-all bg-white border-pink-400 text-pink-600 shadow-md">
+                <span class="text-2xl font-extrabold">Aa</span>
+                <span class="text-[10px] font-bold uppercase tracking-wider hidden sm:inline">Mundo 1</span>
+            </button>
+            <button onclick="switchWorld('E')" id="tab-E" class="world-tab p-3 rounded-2xl border-2 flex flex-col items-center justify-center transition-all bg-white border-emerald-300 text-emerald-600 opacity-70 hover:opacity-100">
+                <span class="text-2xl font-extrabold">Ee</span>
+                <span class="text-[10px] font-bold uppercase tracking-wider hidden sm:inline">Mundo 2</span>
+            </button>
+            <button onclick="switchWorld('I')" id="tab-I" class="world-tab p-3 rounded-2xl border-2 flex flex-col items-center justify-center transition-all bg-white border-cyan-300 text-cyan-600 opacity-70 hover:opacity-100">
+                <span class="text-2xl font-extrabold">Ii</span>
+                <span class="text-[10px] font-bold uppercase tracking-wider hidden sm:inline">Mundo 3</span>
+            </button>
+            <button onclick="switchWorld('O')" id="tab-O" class="world-tab p-3 rounded-2xl border-2 flex flex-col items-center justify-center transition-all bg-white border-amber-300 text-amber-600 opacity-70 hover:opacity-100">
+                <span class="text-2xl font-extrabold">Oo</span>
+                <span class="text-[10px] font-bold uppercase tracking-wider hidden sm:inline">Mundo 4</span>
+            </button>
+            <button onclick="switchWorld('U')" id="tab-U" class="world-tab p-3 rounded-2xl border-2 flex flex-col items-center justify-center transition-all bg-white border-purple-300 text-purple-600 opacity-70 hover:opacity-100">
+                <span class="text-2xl font-extrabold">Uu</span>
+                <span class="text-[10px] font-bold uppercase tracking-wider hidden sm:inline">Mundo 5</span>
+            </button>
+        </div>
+
+        <!-- MODE SELECTOR (Canto Rítmico / Dictado / Juego de Palabras) -->
+        <div class="bg-white/80 backdrop-blur rounded-2xl p-1.5 mb-6 flex border border-blue-100 shadow-sm">
+            <button onclick="switchMode('chant')" id="mode-chant" class="mode-btn flex-1 py-2.5 px-3 rounded-xl font-bold text-sm text-center transition flex items-center justify-center space-x-2 bg-blue-600 text-white shadow-sm">
+                <i class="fa-solid fa-fingerprint"></i>
+                <span>1. Canto de Sílabas (3 Toques)</span>
+            </button>
+            <button onclick="switchMode('dictation')" id="mode-dictation" class="mode-btn flex-1 py-2.5 px-3 rounded-xl font-bold text-sm text-center transition flex items-center justify-center space-x-2 text-slate-600 hover:bg-slate-100">
+                <i class="fa-solid fa-pen-to-square"></i>
+                <span>2. Dictado Diario</span>
+            </button>
+            <button onclick="switchMode('builder')" id="mode-builder" class="mode-btn flex-1 py-2.5 px-3 rounded-xl font-bold text-sm text-center transition flex items-center justify-center space-x-2 text-slate-600 hover:bg-slate-100">
+                <i class="fa-solid fa-puzzle-piece"></i>
+                <span>3. Armar Palabras</span>
+            </button>
+        </div>
+
+        <!-- SECTION 1: CANTO RÍTMICO (PLANTILLA INTERACTIVA) -->
+        <section id="sec-chant" class="space-y-4">
+            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-amber-400 text-white rounded-full flex items-center justify-center text-lg font-bold shadow">
+                        👉
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-amber-900 text-base">Instrucción Pedagógica:</h3>
+                        <p class="text-xs text-amber-800">Toca la tarjeta con tu dedo índice y canta: <span class="font-bold underline" id="chant-example">"ba... ¡ballena!"</span></p>
+                    </div>
+                </div>
+                <button onclick="speakCurrentInstruction()" class="bg-amber-200 hover:bg-amber-300 text-amber-900 p-2.5 rounded-xl transition">
+                    <i class="fa-solid fa-volume-high"></i>
+                </button>
+            </div>
+
+            <!-- GRID OF SYLLABLE CARDS -->
+            <div id="syllable-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3.5">
+                <!-- Dynamically populated via JavaScript -->
+            </div>
+        </section>
+
+        <!-- SECTION 2: DICTADO DIARIO -->
+        <section id="sec-dictation" class="hidden space-y-4">
+            <div class="bg-white rounded-3xl p-6 border border-blue-100 shadow-md">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4 mb-4">
+                    <div>
+                        <span class="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full uppercase tracking-wider">Desafío de dictado</span>
+                        <h2 class="text-2xl font-bold text-slate-800 mt-1" id="dictation-title">Dictado - Mundo A</h2>
+                    </div>
+                    <!-- Day selector -->
+                    <div class="flex items-center space-x-2 bg-slate-100 p-1 rounded-2xl">
+                        <button onclick="setDictationDay(1)" id="day-btn-1" class="day-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-white text-blue-600 shadow-sm">Día 1</button>
+                        <button onclick="setDictationDay(2)" id="day-btn-2" class="day-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-white/50">Día 2</button>
+                        <button onclick="setDictationDay(3)" id="day-btn-3" class="day-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-white/50">Día 3</button>
+                        <button onclick="setDictationDay(4)" id="day-btn-4" class="day-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-white/50">Día 4</button>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Left: Interactive Word Check -->
+                    <div class="space-y-3">
+                        <p class="text-sm text-slate-500 font-semibold">Escucha y escribe la palabra o selecciónala:</p>
+                        <div id="dictation-words-list" class="space-y-2">
+                            <!-- Populated JS -->
+                        </div>
+                    </div>
+
+                    <!-- Right: Helper Sheet Toggle & Sentence Challenge -->
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="font-bold text-slate-700 text-sm flex items-center space-x-1.5">
+                                    <i class="fa-solid fa-map text-amber-500"></i>
+                                    <span>Plantilla de Apoyo (Comodín)</span>
+                                </h4>
+                                <button onclick="toggleHelperModal()" class="text-xs bg-blue-600 hover:bg-blue-700 text-white font-bold px-2.5 py-1 rounded-lg transition">
+                                    Ver Plantilla
+                                </button>
+                            </div>
+                            <p class="text-xs text-slate-500">Recuerda que el niño puede consultar la plantilla de la semana en cualquier momento sin penalización.</p>
+                        </div>
+
+                        <!-- Sentence Challenge Card -->
+                        <div class="mt-6 bg-indigo-50 border border-indigo-100 rounded-xl p-3.5">
+                            <span class="text-[10px] font-bold text-indigo-600 uppercase tracking-wide">Oración Reto del Día</span>
+                            <p class="text-base font-bold text-indigo-950 mt-1" id="dictation-sentence">"La mamá vaca va a la casa."</p>
+                            <button onclick="speakText(document.getElementById('dictation-sentence').innerText)" class="mt-2 text-xs text-indigo-600 hover:text-indigo-800 font-bold flex items-center space-x-1">
+                                <i class="fa-solid fa-volume-high"></i>
+                                <span>Escuchar oración completa</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: ARMAR PALABRAS (MINIGAME) -->
+        <section id="sec-builder" class="hidden space-y-4">
+            <div class="bg-white rounded-3xl p-6 border border-blue-100 shadow-md text-center max-w-2xl mx-auto space-y-6">
+                <div>
+                    <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full uppercase tracking-wider">Juego Interactivo</span>
+                    <h2 class="text-2xl font-bold text-slate-800 mt-2">¡Construye la Palabra!</h2>
+                    <p class="text-xs text-slate-500 mt-1">Selecciona las sílabas en orden para formar la palabra completa. (Toca una casilla si quieres quitar una sílaba).</p>
+                </div>
+
+                <!-- Target Image Display -->
+                <div class="w-36 h-36 mx-auto bg-slate-50 border-2 border-dashed border-slate-200 rounded-3xl flex items-center justify-center p-4 relative shadow-inner">
+                    <span id="builder-emoji" class="text-6xl">🏠</span>
+                    <button onclick="speakBuilderTarget()" class="absolute bottom-2 right-2 bg-white shadow-md hover:bg-slate-50 p-2 rounded-full text-blue-600 text-xs">
+                        <i class="fa-solid fa-volume-high"></i>
+                    </button>
+                </div>
+
+                <!-- Slot Droppable Area -->
+                <div id="builder-slots" class="flex flex-wrap justify-center items-center gap-2 min-h-[64px]">
+                    <!-- Slots dynamic -->
+                </div>
+
+                <!-- Available Syllables to click -->
+                <div id="builder-options" class="flex flex-wrap justify-center gap-2 pt-4 border-t border-slate-100">
+                    <!-- Syllable buttons dynamic -->
+                </div>
+
+                <div class="flex justify-between items-center pt-4">
+                    <button onclick="resetBuilderGame()" class="text-xs text-slate-400 hover:text-slate-600 font-bold flex items-center space-x-1">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>Reiniciar Palabra</span>
+                    </button>
+                    <button onclick="nextBuilderGame()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-6 py-2.5 rounded-xl shadow-md transition flex items-center space-x-2 text-sm">
+                        <span>Siguiente Palabra</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-100 py-3 text-center text-xs text-slate-400">
+        <p>Recurso Didáctico Basado en el <strong>Cuadernillo del Método de los 20 Días</strong> • Para Educación Primaria e Inicial</p>
+    </footer>
+
+    <!-- MODAL: HELPER TEMPLATE (PLANTILLA COMPLETA) -->
+    <div id="modal-helper" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                <h3 class="font-bold text-slate-800 text-lg flex items-center space-x-2">
+                    <i class="fa-solid fa-book-open text-blue-500"></i>
+                    <span>Plantilla de Referencia - Mundo <span id="helper-vowel-title">A</span></span>
+                </h3>
+                <button onclick="toggleHelperModal()" class="w-8 h-8 rounded-full bg-slate-200 hover:bg-slate-300 flex items-center justify-center text-slate-600 transition">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div id="modal-helper-grid" class="p-6 overflow-y-auto grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
+                <!-- Helper Cards Populated -->
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: PROGRESS & BADGES -->
+    <div id="modal-progress" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl text-center space-y-5">
+            <div class="w-16 h-16 bg-yellow-100 text-yellow-500 rounded-3xl flex items-center justify-center text-3xl mx-auto shadow-inner">
+                <i class="fa-solid fa-trophy"></i>
+            </div>
+            <div>
+                <h3 class="text-2xl font-bold text-slate-800">Tus Medallas de Lectura</h3>
+                <p class="text-xs text-slate-500 mt-1">Completa los 5 mundos para ganar todas las insignias.</p>
+            </div>
+
+            <!-- Badges List -->
+            <div class="grid grid-cols-5 gap-2 pt-2">
+                <div id="badge-A" class="p-3 bg-slate-100 rounded-2xl flex flex-col items-center opacity-40">
+                    <span class="text-xl font-black text-pink-500">A</span>
+                    <span class="text-[9px] font-bold text-slate-500 mt-1">Mundo A</span>
+                </div>
+                <div id="badge-E" class="p-3 bg-slate-100 rounded-2xl flex flex-col items-center opacity-40">
+                    <span class="text-xl font-black text-emerald-500">E</span>
+                    <span class="text-[9px] font-bold text-slate-500 mt-1">Mundo E</span>
+                </div>
+                <div id="badge-I" class="p-3 bg-slate-100 rounded-2xl flex flex-col items-center opacity-40">
+                    <span class="text-xl font-black text-cyan-500">I</span>
+                    <span class="text-[9px] font-bold text-slate-500 mt-1">Mundo I</span>
+                </div>
+                <div id="badge-O" class="p-3 bg-slate-100 rounded-2xl flex flex-col items-center opacity-40">
+                    <span class="text-xl font-black text-amber-500">O</span>
+                    <span class="text-[9px] font-bold text-slate-500 mt-1">Mundo O</span>
+                </div>
+                <div id="badge-U" class="p-3 bg-slate-100 rounded-2xl flex flex-col items-center opacity-40">
+                    <span class="text-xl font-black text-purple-500">U</span>
+                    <span class="text-[9px] font-bold text-slate-500 mt-1">Mundo U</span>
+                </div>
+            </div>
+
+            <button onclick="closeProgressModal()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-2xl transition shadow-md text-sm">
+                ¡Continuar Jugando!
+            </button>
+        </div>
+    </div>
+
+    <!-- AUDIO NOTIFICATION TOAST -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-lg transition-all duration-300 opacity-0 translate-y-4 pointer-events-none z-50 flex items-center space-x-2">
+        <i class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toast-msg">¡Excelente trabajo!</span>
+    </div>
+
+    <!-- APP LOGIC SCRIPT -->
+    <script>
+        /* DATA STRUCTURE ACCORDING TO BOOKLET */
+        const WORLDS = {
+            'A': {
+                name: 'Mundo A',
+                color: 'pink',
+                syllables: [
+                    { syl: 'ba', word: 'ballena', icon: '🐳' },
+                    { syl: 'ca', word: 'casa', icon: '🏠' },
+                    { syl: 'cha', word: 'chango', icon: '🐒' },
+                    { syl: 'da', word: 'dado', icon: '🎲' },
+                    { syl: 'fa', word: 'fantasma', icon: '👻' },
+                    { syl: 'ga', word: 'gato', icon: '🐱' },
+                    { syl: 'ha', word: 'hacha', icon: '🪓' },
+                    { syl: 'ja', word: 'jabón', icon: '🧼' },
+                    { syl: 'la', word: 'Lápiz', icon: '✏️' },
+                    { syl: 'lla', word: 'llave', icon: '🔑' },
+                    { syl: 'ma', word: 'manzana', icon: '🍎' },
+                    { syl: 'na', word: 'naranja', icon: '🍊' },
+                    { syl: 'ña', word: 'ñandú', icon: '🦘' },
+                    { syl: 'pa', word: 'pato', icon: '🦆' },
+                    { syl: 'ra', word: 'ratón', icon: '🐭' },
+                    { syl: 'sa', word: 'sandía', icon: '🍉' },
+                    { syl: 'ta', word: 'taza', icon: '☕' },
+                    { syl: 'va', word: 'vaca', icon: '🐮' }
+                ],
+                dictations: {
+                    1: ["bata", "mata", "ala", "pata", "lata", "ama", "vaca", "masa", "tala", "casa"],
+                    2: ["taza", "sana", "sala", "nata", "lala", "mala", "patada", "ataca", "papaya", "amarra"],
+                    3: ["tapa", "capa", "saca", "nara", "maña", "llama", "fama", "tata", "callada", "sabana"],
+                    4: ["dama", "gata", "gasa", "paca", "rata", "rasa", "parra", "caña", "cañada", "calabaza"]
+                },
+                sentences: {
+                    1: "La mamá vaca va a la casa.",
+                    2: "Lala va a la cama.",
+                    3: "La nana Pancha amasa el pan.",
+                    4: "La gata baña a la rata."
+                }
+            },
+            'E': {
+                name: 'Mundo E',
+                color: 'emerald',
+                syllables: [
+                    { syl: 'be', word: 'bebé', icon: '👶' },
+                    { syl: 'ce', word: 'cepillo', icon: '🪥' },
+                    { syl: 'che', word: 'chef', icon: '👨‍🍳' },
+                    { syl: 'de', word: 'dedo', icon: '👆' },
+                    { syl: 'fe', word: 'felicidad', icon: '😊' },
+                    { syl: 'ge', word: 'gelatina', icon: '🍮' },
+                    { syl: 'he', word: 'helado', icon: '🍦' },
+                    { syl: 'je', word: 'jeringa', icon: '💉' },
+                    { syl: 'le', word: 'león', icon: '🦁' },
+                    { syl: 'lle', word: 'leche', icon: '🥛' },
+                    { syl: 'me', word: 'mesa', icon: '🪑' },
+                    { syl: 'ne', word: 'nemo', icon: '🐠' },
+                    { syl: 'pe', word: 'perro', icon: '🐶' },
+                    { syl: 'que', word: 'queso', icon: '🧀' },
+                    { syl: 're', word: 'reloj', icon: '⏰' },
+                    { syl: 'se', word: 'serpiente', icon: '🐍' },
+                    { syl: 'te', word: 'tesoro', icon: '💎' },
+                    { syl: 've', word: 'vestido', icon: '👗' }
+                ],
+                dictations: {
+                    1: ["peca", "yate", "lame", "mela", "tela", "llave", "peña", "carreta", "calabaza", "petate"],
+                    2: ["esa", "ese", "yema", "vena", "pera", "para", "gema", "pecera", "tetera", "carretera"],
+                    3: ["beba", "seca", "fea", "lema", "pena", "reta", "tape", "carrete", "melaza", "pepena"],
+                    4: ["rema", "tema", "sale", "perra", "leña", "nena", "lamen", "pelea", "paleta", "maleta"]
+                },
+                sentences: {
+                    1: "En la maleta está la paleta.",
+                    2: "Llévate la tele a la mesa.",
+                    3: "La medalla es de tela para la becerra.",
+                    4: "El elefante salta la mesa."
+                }
+            },
+            'I': {
+                name: 'Mundo I',
+                color: 'cyan',
+                syllables: [
+                    { syl: 'bi', word: 'bicicleta', icon: '🚲' },
+                    { syl: 'ci', word: 'cisne', icon: '🦢' },
+                    { syl: 'chi', word: 'chile', icon: '🌶️' },
+                    { syl: 'di', word: 'dinosaurio', icon: '🦕' },
+                    { syl: 'fi', word: 'fiesta', icon: '🎉' },
+                    { syl: 'gi', word: 'girasol', icon: '🌻' },
+                    { syl: 'hi', word: 'hipopótamo', icon: '🦛' },
+                    { syl: 'ji', word: 'jirafa', icon: '🦒' },
+                    { syl: 'li', word: 'limón', icon: '🍋' },
+                    { syl: 'lli', word: 'lluvia', icon: '🌧️' },
+                    { syl: 'mi', word: 'miel', icon: '🍯' },
+                    { syl: 'ni', word: 'nido', icon: '🪹' },
+                    { syl: 'pi', word: 'piña', icon: '🍍' },
+                    { syl: 'ri', word: 'risa', icon: '😀' },
+                    { syl: 'si', word: 'silla', icon: '🪑' },
+                    { syl: 'ti', word: 'tijeras', icon: '✂️' },
+                    { syl: 'vi', word: 'violín', icon: '🎻' }
+                ],
+                dictations: {
+                    1: ["bibi", "bici", "chile", "Lili", "mini", "fin", "Sisi", "mil", "sirena", "tijera"],
+                    2: ["lima", "chiva", "dina", "silla", "fina", "mía", "chema", "pita", "mamila", "Camila"],
+                    3: ["mecha", "gira", "miel", "rifa", "jinete", "risa", "jícama", "lechita", "Geremías", "niñita"],
+                    4: ["gatita", "damita", "llavecita", "bebita", "cabecita", "perrita", "jirafa", "Melisa", "Teresa", "escuelita"]
+                },
+                sentences: {
+                    1: "Mireya camina en la piscina.",
+                    2: "La niña Camila cepilla a la gallina.",
+                    3: "Está rica la piña de la niña Tita.",
+                    4: "La sirena quiere caminar."
+                }
+            },
+            'O': {
+                name: 'Mundo O',
+                color: 'amber',
+                syllables: [
+                    { syl: 'bo', word: 'bota', icon: '🥾' },
+                    { syl: 'co', word: 'coco', icon: '🥥' },
+                    { syl: 'cho', word: 'chocolate', icon: '🍫' },
+                    { syl: 'do', word: 'dona', icon: '🍩' },
+                    { syl: 'fo', word: 'foco', icon: '💡' },
+                    { syl: 'go', word: 'gorra', icon: '🧢' },
+                    { syl: 'ho', word: 'hormiga', icon: '🐜' },
+                    { syl: 'jo', word: 'joya', icon: '💎' },
+                    { syl: 'lo', word: 'lobo', icon: '🐺' },
+                    { syl: 'llo', word: 'llorón', icon: '😭' },
+                    { syl: 'mo', word: 'mochila', icon: '🎒' },
+                    { syl: 'no', word: 'nopal', icon: '🌵' },
+                    { syl: 'po', word: 'pollo', icon: '🐥' },
+                    { syl: 'ro', word: 'rosa', icon: '🌹' },
+                    { syl: 'so', word: 'sol', icon: '☀️' },
+                    { syl: 'to', word: 'tortuga', icon: '🐢' },
+                    { syl: 'yo', word: 'yoyo', icon: '🪀' }
+                ],
+                dictations: {
+                    1: ["oso", "oreja", "ocho", "Oscar", "saco", "sola", "sopa", "vaso", "moneda", "mariposa"],
+                    2: ["ola", "sapo", "pato", "mano", "hongo", "moto", "mono", "lola", "soldado", "sombrero"],
+                    3: ["ojo", "lobo", "loro", "león", "elote", "atole", "melón", "limón", "paloma", "pollito"],
+                    4: ["olla", "pelo", "pino", "solo", "pozo", "osa", "paseo", "pelota", "papalote", "tomate"]
+                },
+                sentences: {
+                    1: "Óscar sacó un conejo de ese sombrero.",
+                    2: "Él se va con Lola en moto de paseo.",
+                    3: "Lleva la pelota, lleva el papalote.",
+                    4: "El ratón come queso."
+                }
+            },
+            'U': {
+                name: 'Mundo U',
+                color: 'purple',
+                syllables: [
+                    { syl: 'bu', word: 'búho', icon: '🦉' },
+                    { syl: 'cu', word: 'cuna', icon: '🛏️' },
+                    { syl: 'chu', word: 'chupón', icon: '🍼' },
+                    { syl: 'du', word: 'dulce', icon: '🍬' },
+                    { syl: 'fu', word: 'fuente', icon: '⛲' },
+                    { syl: 'gu', word: 'gusano', icon: '🐛' },
+                    { syl: 'hu', word: 'huevo', icon: '🥚' },
+                    { syl: 'ju', word: 'jugo', icon: '🧃' },
+                    { syl: 'lu', word: 'luna', icon: '🌙' },
+                    { syl: 'mu', word: 'muñeca', icon: '🪆' },
+                    { syl: 'nu', word: 'nube', icon: '☁️' },
+                    { syl: 'pu', word: 'pulpo', icon: '🐙' },
+                    { syl: 'ru', word: 'rueda', icon: '🛞' },
+                    { syl: 'su', word: 'suéter', icon: '🧶' },
+                    { syl: 'tu', word: 'tuna', icon: '🌵' },
+                    { syl: 'vu', word: 'vuelo', icon: '✈️' }
+                ],
+                dictations: {
+                    1: ["uña", "usa", "uno", "burro", "muela", "tuna", "tubo", "mula", "vuela", "Rubí"],
+                    2: ["nube", "suma", "lupa", "Raúl", "ruta", "luna", "nueve", "duele", "suelo", "una"],
+                    3: ["cubeta", "puma", "cuna", "uniforme", "gusano", "Úrsula", "vuelta", "tortuga", "rueda", "abuelo"],
+                    4: ["uvas", "fuente", "cuento", "nudo", "duro", "mucho", "puño", "pañuelo", "último", "cuaderno"]
+                },
+                sentences: {
+                    1: "Úrsula toma su tortuga o su gusano.",
+                    2: "Raúl mira la luna en la cuna a las nueve.",
+                    3: "Raúl y Úrsula toman agua de la fuente.",
+                    4: "El bebé tiene su chupón."
+                }
+            }
+        };
+
+        /* GAME STATE */
+        let currentWorld = 'A';
+        let currentMode = 'chant';
+        let currentDictationDay = 1;
+        let starScore = 0;
+        let tapCounts = {}; // Stores tap count per card
+        let completedDictations = new Set();
+        let builderTarget = null;
+        let builderSlots = [];
+
+        /* APP INITIALIZATION */
+        window.onload = function() {
+            renderSyllables();
+            renderDictationWords();
+            initBuilderGame();
+            updateTabStyles();
+        };
+
+        /* AUDIO SYNTHESIS HELPER */
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // Stop ongoing
+                const msg = new SpeechSynthesisUtterance(text);
+                msg.lang = 'es-ES';
+                msg.rate = 0.85; // Slightly slower for kids
+                msg.pitch = 1.1;
+                window.speechSynthesis.speak(msg);
+            }
+        }
+
+        /* 1. CANTO RÍTMICO LOGIC */
+        function renderSyllables() {
+            const grid = document.getElementById('syllable-grid');
+            grid.innerHTML = '';
+
+            const data = WORLDS[currentWorld];
+            data.syllables.forEach((item, index) => {
+                const cardId = `${currentWorld}-${index}`;
+                if (!tapCounts[cardId]) tapCounts[cardId] = 0;
+
+                const card = document.createElement('div');
+                card.className = "bg-white border-2 border-slate-100 hover:border-blue-300 rounded-3xl p-4 flex flex-col items-center justify-between text-center cursor-pointer shadow-sm hover:shadow-md transition-all bounce-tap select-none relative overflow-hidden group";
+                card.onclick = () => handleCardTap(cardId, item);
+
+                card.innerHTML = `
+                    <div class="absolute top-2 right-2 bg-slate-100 text-slate-500 font-bold text-[10px] w-6 h-6 rounded-full flex items-center justify-center" id="tap-badge-${cardId}">
+                        ${tapCounts[cardId]}/3
+                    </div>
+                    <span class="text-4xl my-2 transform group-hover:scale-110 transition-transform">${item.icon}</span>
+                    <div>
+                        <span class="text-2xl font-black text-slate-800 uppercase tracking-wide block">${item.syl}</span>
+                        <span class="text-xs font-semibold text-slate-500 capitalize">${item.word}</span>
+                    </div>
+                    <div class="w-full bg-slate-100 h-1.5 rounded-full mt-3 overflow-hidden">
+                        <div class="bg-blue-500 h-full transition-all duration-300" id="progress-${cardId}" style="width: ${(tapCounts[cardId]/3)*100}%"></div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            // Update example text instruction
+            const first = data.syllables[0];
+            document.getElementById('chant-example').innerText = `"${first.syl}... ¡${first.word}!"`;
+        }
+
+        function handleCardTap(cardId, item) {
+            tapCounts[cardId] = (tapCounts[cardId] || 0) + 1;
+            
+            // TTS Chant - Single syllable repetition
+            const textToSpeak = `${item.syl}... ¡${item.word}!`;
+            speakText(textToSpeak);
+
+            if (tapCounts[cardId] >= 3) {
+                tapCounts[cardId] = 0; // Reset after complete sequence
+                addStars(1);
+                showToast(`¡Completaste ${item.syl} - ${item.word}! +1 ⭐`);
+                confetti({ particleCount: 30, spread: 60, origin: { y: 0.8 } });
+            }
+
+            // Update UI Card
+            const progress = document.getElementById(`progress-${cardId}`);
+            const badge = document.getElementById(`tap-badge-${cardId}`);
+            if (progress) progress.style.width = `${(tapCounts[cardId]/3)*100}%`;
+            if (badge) badge.innerText = `${tapCounts[cardId]}/3`;
+        }
+
+        /* 2. DICTATION LOGIC */
+        function renderDictationWords() {
+            const list = document.getElementById('dictation-words-list');
+            list.innerHTML = '';
+
+            const title = document.getElementById('dictation-title');
+            title.innerText = `Dictado - ${WORLDS[currentWorld].name}`;
+
+            const words = WORLDS[currentWorld].dictations[currentDictationDay] || [];
+            const sentence = WORLDS[currentWorld].sentences[currentDictationDay] || "";
+            document.getElementById('dictation-sentence').innerText = `"${sentence}"`;
+
+            words.forEach((word, idx) => {
+                const itemKey = `${currentWorld}-${currentDictationDay}-${idx}`;
+                const isDone = completedDictations.has(itemKey);
+
+                const row = document.createElement('div');
+                row.className = `p-3 rounded-2xl border flex items-center justify-between transition ${isDone ? 'bg-emerald-50 border-emerald-200' : 'bg-white border-slate-200'}`;
+                
+                row.innerHTML = `
+                    <div class="flex items-center space-x-3">
+                        <button onclick="speakText('${word}')" class="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-100 flex items-center justify-center transition">
+                            <i class="fa-solid fa-volume-high"></i>
+                        </button>
+                        <span class="font-bold text-lg text-slate-700">${isDone ? word : '••••••••'}</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <input type="text" id="input-${itemKey}" placeholder="Escribe..." class="w-28 px-2.5 py-1 text-sm border border-slate-200 rounded-lg focus:outline-none focus:border-blue-500 uppercase font-bold" ${isDone ? 'disabled' : ''}>
+                        <button onclick="checkDictationWord('${itemKey}', '${word}')" class="bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition" ${isDone ? 'disabled' : ''}>
+                            ${isDone ? '<i class="fa-solid fa-check"></i>' : 'Verificar'}
+                        </button>
+                    </div>
+                `;
+                list.appendChild(row);
+            });
+        }
+
+        function checkDictationWord(key, targetWord) {
+            const input = document.getElementById(`input-${key}`);
+            if (!input) return;
+
+            const val = input.value.trim().toLowerCase();
+            if (val === targetWord.toLowerCase()) {
+                completedDictations.add(key);
+                addStars(2);
+                showToast(`¡Excelente! Palabra '${targetWord}' correcta. +2 ⭐`);
+                speakText("¡Correcto!");
+                renderDictationWords();
+            } else {
+                showToast("Inténtalo de nuevo. Puedes mirar la plantilla de apoyo.");
+                speakText("Inténtalo otra vez");
+            }
+        }
+
+        function setDictationDay(day) {
+            currentDictationDay = day;
+            document.querySelectorAll('.day-btn').forEach((b, i) => {
+                if (i + 1 === day) {
+                    b.className = "day-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-white text-blue-600 shadow-sm";
+                } else {
+                    b.className = "day-btn px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:bg-white/50";
+                }
+            });
+            renderDictationWords();
+        }
+
+        /* 3. WORD BUILDER MINIGAME LOGIC */
+        // Pool of words per world for the word builder game
+        const BUILDER_WORDS = {
+            'A': [
+                { word: "CASA", syllables: ["ca", "sa"], icon: "🏠" },
+                { word: "VACA", syllables: ["va", "ca"], icon: "🐮" },
+                { word: "TASA", syllables: ["ta", "za"], icon: "☕" },
+                { word: "PATA", syllables: ["pa", "ta"], icon: "🦆" },
+                { word: "RATA", syllables: ["ra", "ta"], icon: "🐭" },
+                { word: "LAMA", syllables: ["la", "ma"], icon: "🦙" }
+            ],
+            'E': [
+                { word: "MESA", syllables: ["me", "sa"], icon: "🪑" },
+                { word: "PERA", syllables: ["pe", "ra"], icon: "🍐" },
+                { word: "LLAVE", syllables: ["lla", "ve"], icon: "🔑" },
+                { word: "TELA", syllables: ["te", "la"], icon: "🧵" },
+                { word: "PENA", syllables: ["pe", "ña"], icon: "⛰️" }
+            ],
+            'I': [
+                { word: "SILLA", syllables: ["si", "lla"], icon: "🪑" },
+                { word: "LIMA", syllables: ["li", "ma"], icon: "🍋" },
+                { word: "CHILE", syllables: ["chi", "le"], icon: "🌶️" },
+                { word: "PIÑA", syllables: ["pi", "ña"], icon: "🍍" },
+                { word: "RISA", syllables: ["ri", "sa"], icon: "😀" }
+            ],
+            'O': [
+                { word: "LOBO", syllables: ["lo", "bo"], icon: "🐺" },
+                { word: "PATOS", syllables: ["pa", "to"], icon: "🦆" },
+                { word: "SOFA", syllables: ["so", "fa"], icon: "🛋️" },
+                { word: "FOCO", syllables: ["fo", "co"], icon: "💡" },
+                { word: "MONO", syllables: ["mo", "no"], icon: "🐒" }
+            ],
+            'U': [
+                { word: "LUNA", syllables: ["lu", "na"], icon: "🌙" },
+                { word: "CUNA", syllables: ["cu", "na"], icon: "🛏️" },
+                { word: "NUBE", syllables: ["nu", "be"], icon: "☁️" },
+                { word: "JUGO", syllables: ["ju", "go"], icon: "🧃" },
+                { word: "UVA", syllables: ["u", "vas"], icon: "🍇" }
+            ]
+        };
+
+        let currentBuilderItem = null;
+        let userSelectedSyllables = [];
+        let availableOptions = [];
+
+        function initBuilderGame() {
+            const list = BUILDER_WORDS[currentWorld] || BUILDER_WORDS['A'];
+            currentBuilderItem = list[Math.floor(Math.random() * list.length)];
+            userSelectedSyllables = [];
+
+            document.getElementById('builder-emoji').innerText = currentBuilderItem.icon;
+
+            // Generate option pool (correct syllables + distractor syllables from current world)
+            const correctSyls = [...currentBuilderItem.syllables];
+            const worldSyls = WORLDS[currentWorld].syllables.map(s => s.syl);
+            
+            let distractors = [];
+            while (distractors.length < 3) {
+                const randSyl = worldSyls[Math.floor(Math.random() * worldSyls.length)];
+                if (!correctSyls.includes(randSyl) && !distractors.includes(randSyl)) {
+                    distractors.push(randSyl);
+                }
+            }
+
+            availableOptions = [...correctSyls, ...distractors].sort(() => Math.random() - 0.5);
+
+            renderBuilderSlots();
+            renderBuilderOptions();
+            speakBuilderTarget();
+        }
+
+        function renderBuilderSlots() {
+            const slotsDiv = document.getElementById('builder-slots');
+            slotsDiv.innerHTML = '';
+
+            const totalSlots = currentBuilderItem.syllables.length;
+
+            for (let i = 0; i < totalSlots; i++) {
+                const filledSyl = userSelectedSyllables[i];
+                const slot = document.createElement('button');
+                
+                if (filledSyl) {
+                    slot.className = "w-16 h-14 border-2 border-blue-500 bg-blue-100 rounded-2xl flex items-center justify-center font-black text-xl text-blue-800 uppercase shadow-sm bounce-tap";
+                    slot.innerText = filledSyl;
+                    slot.onclick = () => removeSyllableFromSlot(i);
+                } else {
+                    slot.className = "w-16 h-14 border-2 border-dashed border-slate-300 rounded-2xl bg-slate-50 flex items-center justify-center font-black text-xl text-slate-300 uppercase";
+                    slot.innerText = "_";
+                }
+
+                slotsDiv.appendChild(slot);
+            }
+        }
+
+        function renderBuilderOptions() {
+            const optionsDiv = document.getElementById('builder-options');
+            optionsDiv.innerHTML = '';
+
+            // Count how many times each option has been used
+            const usedCounts = {};
+            userSelectedSyllables.forEach(s => {
+                usedCounts[s] = (usedCounts[s] || 0) + 1;
+            });
+
+            availableOptions.forEach((syl, index) => {
+                // If this option index was already picked, disable/hide option
+                const availableCount = availableOptions.filter(x => x === syl).length;
+                const usedCount = usedCounts[syl] || 0;
+
+                const btn = document.createElement('button');
+                btn.className = "px-4 py-3 bg-white border-2 border-slate-200 hover:border-blue-400 font-extrabold text-xl text-slate-800 rounded-2xl shadow-sm hover:shadow transition bounce-tap uppercase disabled:opacity-30 disabled:pointer-events-none";
+                btn.innerText = syl;
+                
+                // Check if we should disable this option instance
+                let timesSeen = 0;
+                for (let i = 0; i <= index; i++) {
+                    if (availableOptions[i] === syl) timesSeen++;
+                }
+                if (timesSeen <= usedCount) {
+                    btn.disabled = true;
+                }
+
+                btn.onclick = () => selectBuilderOption(syl);
+                optionsDiv.appendChild(btn);
+            });
+        }
+
+        function selectBuilderOption(syl) {
+            if (userSelectedSyllables.length < currentBuilderItem.syllables.length) {
+                userSelectedSyllables.push(syl);
+                speakText(syl);
+                renderBuilderSlots();
+                renderBuilderOptions();
+                checkBuilderCompletion();
+            }
+        }
+
+        function removeSyllableFromSlot(index) {
+            userSelectedSyllables.splice(index, 1);
+            renderBuilderSlots();
+            renderBuilderOptions();
+        }
+
+        function checkBuilderCompletion() {
+            if (userSelectedSyllables.length === currentBuilderItem.syllables.length) {
+                const userWord = userSelectedSyllables.join('').toLowerCase();
+                const targetWord = currentBuilderItem.syllables.join('').toLowerCase();
+
+                if (userWord === targetWord) {
+                    // Correct answer
+                    const slotsDiv = document.getElementById('builder-slots');
+                    Array.from(slotsDiv.children).forEach(child => {
+                        child.className = "w-16 h-14 border-2 border-emerald-500 bg-emerald-100 rounded-2xl flex items-center justify-center font-black text-xl text-emerald-800 uppercase animate-bounce";
+                    });
+
+                    addStars(3);
+                    showToast(`¡Excelente! Armaste la palabra "${currentBuilderItem.word}". +3 ⭐`);
+                    speakText(`¡Excelente! ¡Armaste la palabra ${currentBuilderItem.word}!`);
+                    confetti({ particleCount: 50, spread: 80, origin: { y: 0.7 } });
+                } else {
+                    // Wrong answer
+                    const slotsDiv = document.getElementById('builder-slots');
+                    Array.from(slotsDiv.children).forEach(child => {
+                        child.className = "w-16 h-14 border-2 border-red-400 bg-red-100 rounded-2xl flex items-center justify-center font-black text-xl text-red-700 uppercase";
+                    });
+
+                    showToast("Esas sílabas no forman la palabra correcta. Toca una casilla para corregir.");
+                    speakText("Inténtalo otra vez");
+                }
+            }
+        }
+
+        function speakBuilderTarget() {
+            if (currentBuilderItem) {
+                speakText(`Arma la palabra ${currentBuilderItem.word}`);
+            }
+        }
+
+        function resetBuilderGame() {
+            userSelectedSyllables = [];
+            renderBuilderSlots();
+            renderBuilderOptions();
+        }
+
+        function nextBuilderGame() {
+            initBuilderGame();
+        }
+
+        /* NAVIGATION & MODALS */
+        function switchWorld(world) {
+            currentWorld = world;
+            updateTabStyles();
+            renderSyllables();
+            renderDictationWords();
+            initBuilderGame();
+            showToast(`¡Bienvenido al ${WORLDS[world].name}!`);
+        }
+
+        function switchMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.className = "mode-btn flex-1 py-2.5 px-3 rounded-xl font-bold text-sm text-center transition flex items-center justify-center space-x-2 text-slate-600 hover:bg-slate-100";
+            });
+
+            const activeBtn = document.getElementById(`mode-${mode}`);
+            if (activeBtn) activeBtn.className = "mode-btn flex-1 py-2.5 px-3 rounded-xl font-bold text-sm text-center transition flex items-center justify-center space-x-2 bg-blue-600 text-white shadow-sm";
+
+            document.getElementById('sec-chant').classList.add('hidden');
+            document.getElementById('sec-dictation').classList.add('hidden');
+            document.getElementById('sec-builder').classList.add('hidden');
+
+            document.getElementById(`sec-${mode}`).classList.remove('hidden');
+        }
+
+        function updateTabStyles() {
+            const worlds = ['A', 'E', 'I', 'O', 'U'];
+            worlds.forEach(w => {
+                const tab = document.getElementById(`tab-${w}`);
+                if (w === currentWorld) {
+                    tab.classList.remove('opacity-70');
+                    tab.classList.add('shadow-md', 'scale-105', 'z-10');
+                } else {
+                    tab.classList.add('opacity-70');
+                    tab.classList.remove('shadow-md', 'scale-105', 'z-10');
+                }
+            });
+        }
+
+        function toggleHelperModal() {
+            const modal = document.getElementById('modal-helper');
+            if (modal.classList.contains('hidden')) {
+                document.getElementById('helper-vowel-title').innerText = currentWorld;
+                const grid = document.getElementById('modal-helper-grid');
+                grid.innerHTML = '';
+                WORLDS[currentWorld].syllables.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = "bg-slate-50 border border-slate-200 rounded-2xl p-3 flex flex-col items-center text-center";
+                    card.innerHTML = `
+                        <span class="text-3xl">${item.icon}</span>
+                        <span class="text-xl font-black text-slate-800 uppercase mt-1">${item.syl}</span>
+                        <span class="text-[10px] text-slate-500 font-bold capitalize">${item.word}</span>
+                    `;
+                    grid.appendChild(card);
+                });
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function openProgressModal() {
+            document.getElementById('modal-progress').classList.remove('hidden');
+        }
+
+        function closeProgressModal() {
+            document.getElementById('modal-progress').classList.add('hidden');
+        }
+
+        function addStars(count) {
+            starScore += count;
+            document.getElementById('star-count').innerText = starScore;
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            toast.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+            }, 3000);
+        }
+
+        function speakCurrentInstruction() {
+            const first = WORLDS[currentWorld].syllables[0];
+            speakText(`Toca la tarjeta con tu dedo y canta: ${first.syl}... ¡${first.word}!`);
+        }
+    </script>
+</body>
+</html>
